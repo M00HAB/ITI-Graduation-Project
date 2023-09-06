@@ -8,45 +8,6 @@
 
 extern u8 SafeMode;
 
-void Welcome()
-{
-    KeyPad_Init();
-    LCD_Init();
-    LCD_CursorPosition(1,5);
-    LCD_SendString("Welcome");
-    LCD_CursorPosition(2,0);
-    LCD_SendString("Have a safe stay");
-    _delay_ms(500);
-    LCD_CursorPosition(1,0);
-    LCD_SendString("for safe mode 1 ");
-    LCD_CursorPosition(2,0);
-    LCD_SendString("for passwords 2 ");
-    // GettingChoice(); According to ali
-}
-
-void GettingChoice()
-{
-    KeyPad_ButtonState Choice;
-    do {
-        Choice = KeyPad_GetPressedButton();
-    } while(Choice != KEYPAD_B08 && Choice != KEYPAD_B09);
-    switch (Choice)
-    {
-    case KEYPAD_B08:
-        SafeMode();
-        break;
-    
-    case KEYPAD_B09:
-        PasswordChange();
-        break;
-    
-    default:
-        #error "How You Passed the while Loop!!!!!";
-        break;
-    }
-    PasswordChange();
-}
-
 static u8 OldPassword()
 {
     u8 x;
@@ -88,4 +49,44 @@ static void PasswordChange()
 static void SafeMode()
 {
     // This Function is using Ali's Safe Mode Needing Ali's Help.
+}
+
+void Welcome()
+{
+    KeyPad_Init();
+    LCD_Init();
+    LCD_CursorPosition(1,5);
+    LCD_SendString("Welcome");
+    LCD_CursorPosition(2,0);
+    LCD_SendString("Have a safe stay");
+    _delay_ms(500);
+    LCD_SendCommand(0x01);
+    LCD_CursorPosition(1,0);
+    LCD_SendString("for safe mode 1 ");
+    LCD_CursorPosition(2,0);
+    LCD_SendString("for passwords 2 ");
+    // GettingChoice(); According to ali
+}
+
+void GettingChoice()
+{
+    KeyPad_ButtonState Choice;
+    do {
+        Choice = KeyPad_GetPressedButton();
+    } while(Choice != KEYPAD_B08 && Choice != KEYPAD_B09);
+    switch (Choice)
+    {
+    case KEYPAD_B08:
+        SafeMode();
+        break;
+    
+    case KEYPAD_B09:
+        PasswordChange();
+        break;
+    
+    default:
+        #error "How You Passed the while Loop!!!!!";
+        break;
+    }
+    PasswordChange();
 }
